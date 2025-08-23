@@ -6,4 +6,45 @@
 .toy-filter form {
   display: flex;
   flex-direction: column;
+  gap: 0.3em;
+  max-width: 100%;
+}
+
+.labels-filter {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.labels-container {
+  display: flex;
+  overflow-x: auto;
+  max-width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--clr1) transparent;
+}
+
+.labels-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.label-btn {
+  padding: 0.3em 0.8em;
+  border: 1.5px solid var(--clr1);
+  border-radius: 16px;
+  background-color: white;
+  color: var(--clr1);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.label-btn:hover {
+  background-color: var(--clr1bg);
+}
+
+.label-btn.selected {
+  background-color: var(--clr1);
+  color: white;
 }

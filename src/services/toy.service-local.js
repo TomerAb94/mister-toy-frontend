@@ -4,10 +4,6 @@ import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'toyDB'
 
-const labels = ['On wheels', 'Box game', 'Art', 'Baby', 'Doll', 'Puzzle',
-'Outdoor', 'Battery Powered']
-
-
 export const toyService = {
   query,
   getById,
@@ -16,20 +12,26 @@ export const toyService = {
   getEmptyToy,
   getRandomToy,
   getDefaultFilter,
-  labels
+  getLabels,
 }
 
 function query(filterBy = {}) {
-    return storageService.query(STORAGE_KEY).then((toys) => {
-      if (!filterBy.txt) filterBy.txt = ''
-      if (!filterBy.maxPrice) filterBy.maxPrice = -Infinity
-      const regExp = new RegExp(filterBy.txt, 'i')
-      return toys.filter(
-        (toy) =>
-          regExp.test(toy.name) &&
-          filterBy.maxPrice <= toy.price
-      )
-    })
+  console.log('filterBy', filterBy)
+  
+  return storageService.query(STORAGE_KEY).then((toys) => {
+    if (!filterBy.txt) filterBy.txt = ''
+    if (!filterBy.maxPrice) filterBy.maxPrice = -Infinity
+    if (filterBy.inStock === undefined) filterBy.inStock = ''
+    if (filterBy.labels === undefined) filterBy.labels = []
+    const regExp = new RegExp(filterBy.txt, 'i')
+    return toys.filter(
+      (toy) =>
+        regExp.test(toy.name) &&
+        filterBy.maxPrice <= toy.price &&
+        (filterBy.inStock === '' || toy.inStock === filterBy.inStock)&&
+        (filterBy.labels.length === 0 || filterBy.labels.every(label => toy.labels.includes(label)))
+    )
+  })
 }
 
 function getById(toyId) {
@@ -67,18 +69,31 @@ function getRandomToy() {
     name: 'toy-' + (Date.now() % 1000),
     imgUrl: 'https://purepng.com/public/uploads/large/minion-toy-vbr.png',
     price: utilService.getRandomIntInclusive(1000, 9000),
-    labels: utilService.getRandomArrItems(labels),
+    labels: utilService.getRandomArrItems(getLabels()),
     createdAt: Date.now(),
     inStock: Math.random() > 0.5,
   }
 }
 
 function getDefaultFilter() {
-  return { txt: '', maxPrice: '' }
+  return { txt: '', maxPrice: '', labels: [], inStock: '' }
+}
+
+export function getLabels() {
+  const labels = [
+    'On wheels',
+    'Box game',
+    'Art',
+    'Baby',
+    'Doll',
+    'Puzzle',
+    'Outdoor',
+    'Battery Powered',
+  ]
+  return labels
 }
 
 // TEST DATA
-
 
 // const demoToys = [
 //   {
@@ -155,7 +170,7 @@ function getDefaultFilter() {
 //   },
 // ]
 
-// storageService.post(STORAGE_KEY, { 
+// storageService.post(STORAGE_KEY, {
 //     name: 'Talking Doll',
 //     imgUrl: 'https://purepng.com/public/uploads/large/minion-toy-vbr.png',
 //     price: 123,
