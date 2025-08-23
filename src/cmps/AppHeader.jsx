@@ -2,7 +2,7 @@
 // import { LoginSignup } from './LoginSignup.jsx'
 // import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 // import { logout } from '../store/actions/user.actions.js'
-// import { TOGGLE_CART_IS_SHOWN } from '../store/reducers/car.reducer.js'
+// import { TOGGLE_TOYT_IS_SHOWN } from '../store/reducers/toy.reducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
@@ -22,9 +22,9 @@ export function AppHeader() {
 
 
 
-    // function onToggleCart(ev) {
+    // function onToggleToyt(ev) {
     //     ev.preventDefault()
-    //     dispatch({ type: TOGGLE_CART_IS_SHOWN })
+    //     dispatch({ type: TOGGLE_TOYT_IS_SHOWN })
     // }
 
     return (
@@ -35,7 +35,7 @@ export function AppHeader() {
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/toy" >Toys</NavLink>
-                    {/* <a onClick={onToggleCart} href="#">🛒 Cart</a> */}
+                    {/* <a onClick={onToggleToyt} href="#">🛒 Toyt</a> */}
                 </nav>
             </section>
             {/* {user ? (

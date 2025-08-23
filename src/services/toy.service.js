@@ -45,21 +45,19 @@ function getEmptyToy() {
     return {
         vendor: '',
         price: '',
-        speed: '',
     }
 }
 
 function getRandomToy() {
     return {
-        vendor: 'Susita-' + (Date.now() % 1000),
+        vendor: 'toy-' + (Date.now() % 1000),
         price: utilService.getRandomIntInclusive(1000, 9000),
-        speed: utilService.getRandomIntInclusive(90, 200),
     }
 }
 
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '', minSpeed: '' }
+    return { txt: '', maxPrice: '' }
 }
 
 

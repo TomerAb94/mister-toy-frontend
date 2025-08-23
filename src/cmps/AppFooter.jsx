@@ -1,33 +1,33 @@
 // import { UserMsg } from './UserMsg.jsx'
-// import { ShoppingCart } from './ShoppingCart.jsx'
-// import { TOGGLE_CART_IS_SHOWN } from '../store/reducers/car.reducer.js'
+// import { ShoppingToyt } from './ShoppingToyt.jsx'
+// import { TOGGLE_TOYT_IS_SHOWN } from '../store/reducers/toy.reducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 
 export function AppFooter() {
     const dispatch = useDispatch()
-    // const isCartShown = useSelector(storeState => storeState.carModule.isCartShown)
+    // const isToytShown = useSelector(storeState => storeState.toyModule.isToytShown)
     // const count = useSelector(storeState => storeState.userModule.count)
-    // const carsLength = useSelector(storeState => storeState.carModule.cars.length)
-    // const shoppingCartLength = useSelector(storeState => storeState.carModule.shoppingCart.length)
+    // const toysLength = useSelector(storeState => storeState.toyModule.toys.length)
+    // const shoppingToytLength = useSelector(storeState => storeState.toyModule.shoppingToyt.length)
 
     return (
         <footer className='app-footer'>
             {/* <h5> */}
-                {/* Currently {carsLength} cars in the shop */}
+                {/* Currently {toysLength} toys in the shop */}
             {/* </h5> */}
             {/* <p> */}
                 {/* Coffeerights to all - Count: {count} */}
             {/* </p> */}
             {/* <h5>
-                <span>{shoppingCartLength}</span> Products in your Cart
+                <span>{shoppingToytLength}</span> Products in your Toyt
                 <a href="#" onClick={(ev) => {
                     ev.preventDefault()
-                    dispatch({ type: TOGGLE_CART_IS_SHOWN })
+                    dispatch({ type: TOGGLE_TOYT_IS_SHOWN })
                 }}>
-                    ({(isCartShown) ? 'hide' : 'show'})
+                    ({(isToytShown) ? 'hide' : 'show'})
                 </a> */}
             {/* </h5> */}
-            {/* <ShoppingCart isCartShown={isCartShown} /> */}
+            {/* <ShoppingToyt isToytShown={isToytShown} /> */}
             {/* <UserMsg /> */}
         </footer>
     )

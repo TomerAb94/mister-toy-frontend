@@ -2,6 +2,7 @@ export const utilService = {
     makeId,
     makeLorem,
     getRandomIntInclusive,
+    getRandomArrItems,
     loadFromStorage,
     saveToStorage,
     animateCSS,
@@ -70,4 +71,14 @@ function debounce(func, timeout = 300) {
             func.apply(this, args)
         }, timeout)
     }
+}
+
+function getRandomArrItems(arr) {
+  const items = []
+  const count = getRandomIntInclusive(1, arr.length)
+  for (let i = 0; i < count; i++) {
+    const idx = getRandomIntInclusive(0, arr.length - 1)
+    if (!items.includes(arr[idx])) items.push(arr[idx])
+  }
+  return items
 }

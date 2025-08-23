@@ -1,8 +1,8 @@
-.car-edit {
+.toy-edit {
     text-align: center;
 }
 
-.car-edit form {
+.toy-edit form {
     display: flex;
     flex-direction: column;
     align-items: center;
