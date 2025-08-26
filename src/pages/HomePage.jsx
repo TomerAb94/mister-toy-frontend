@@ -1,4 +1,4 @@
-import logoImg from "../assets/img/logo.jpg"
+import heroImg from '../assets/img/hero.jpg'
 
 // import { useDispatch, useSelector } from "react-redux"
 // import { CHANGE_BY } from "../store/reducers/user.reducer.js"
@@ -30,7 +30,7 @@ export function HomePage() {
                     {/* changeCount(10) */}
                 {/* }}>+10</button> */}
             {/* </h2 > */}
-            <img src={logoImg} />
+            <img src={heroImg} />
         </section >
     )
 }

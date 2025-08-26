@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react'
 import { toyService } from '../services/toy.service-local.js'
-import { Link, useParams ,useNavigate} from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { PopUp } from '../cmps/PopUp.jsx'
+import { Chat } from '../cmps/Chat.jsx'
+
+
 
 export function ToyDetails() {
   const [toy, setToy] = useState(null)
+  const [isOpen, setIsOpen] = useState(false)
   const { toyId } = useParams()
   const navigate = useNavigate()
 
@@ -20,6 +25,15 @@ export function ToyDetails() {
         navigate('/toy')
       })
   }
+
+  function openChat() {
+    setIsOpen(true)
+  }
+
+  function onCloseChat() {
+    setIsOpen(false)
+  }
+
   if (!toy) return <div>Loading...</div>
   return (
     <section className="toy-details">
@@ -44,11 +58,21 @@ export function ToyDetails() {
           <span>Out of Stock</span>
         )}
       </h6>
-      <button><Link to={`/toy/edit/${toy._id}`}>Edit</Link> &nbsp;</button>
-      <button><Link to={`/toy`}>Back</Link></button>
+      <button>
+        <Link to={`/toy/edit/${toy._id}`}>Edit</Link> &nbsp;
+      </button>
+      <button>
+        <Link to={`/toy`}>Back</Link>
+      </button>
       <p>
-        <button><Link to="/toy/11ex6">Next Toy</Link></button>
+        <button>
+          <Link to="/toy/11ex6">Next Toy</Link>
+        </button>
       </p>
+      <button onClick={() => openChat()}> 💬</button>
+      <PopUp isOpen={isOpen} onClose={onCloseChat} title='Chat'>
+        <Chat />
+      </PopUp>
     </section>
   )
 }
