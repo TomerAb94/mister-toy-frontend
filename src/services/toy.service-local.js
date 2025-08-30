@@ -19,18 +19,44 @@ function query(filterBy = {}) {
   console.log('filterBy', filterBy)
   
   return storageService.query(STORAGE_KEY).then((toys) => {
-    if (!filterBy.txt) filterBy.txt = ''
-    if (!filterBy.maxPrice) filterBy.maxPrice = -Infinity
-    if (filterBy.inStock === undefined) filterBy.inStock = ''
-    if (filterBy.labels === undefined) filterBy.labels = []
-    const regExp = new RegExp(filterBy.txt, 'i')
-    return toys.filter(
-      (toy) =>
-        regExp.test(toy.name) &&
-        filterBy.maxPrice <= toy.price &&
-        (filterBy.inStock === '' || toy.inStock === filterBy.inStock)&&
-        (filterBy.labels.length === 0 || filterBy.labels.every(label => toy.labels.includes(label)))
-    )
+    let toysToShow = toys
+
+        //* Filter by text
+        if (filterBy.txt) {
+            const regExp = new RegExp(filterBy.txt, 'i')
+            toysToShow = toysToShow.filter(toy => regExp.test(toy.name))
+        }
+
+        //* Filter by maxPrice
+        if (filterBy.maxPrice) {
+            toysToShow = toysToShow.filter(toy => toy.price <= filterBy.maxPrice)
+        }
+
+        //* Filter by inStock
+        if (filterBy.inStock !== '') {
+            toysToShow = toysToShow.filter(toy => toy.inStock === (filterBy.inStock === 'true'))
+        }
+
+        //* Filter by labels
+        if (filterBy.labels && filterBy.labels.length) {
+            toysToShow = toysToShow.filter(toy => 
+                filterBy.labels.every(label => toy.labels.includes(label))
+            )
+        }
+
+        //* Sort
+        if (filterBy.sortBy) {
+            if (filterBy.sortBy === 'name') {
+                toysToShow = toysToShow.sort((a, b) => a.name.localeCompare(b.name))
+            } else if (filterBy.sortBy === 'price') {
+                toysToShow = toysToShow.sort((a, b) => a.price - b.price)
+            } else if (filterBy.sortBy === 'createdAt') {
+                toysToShow = toysToShow.sort((a, b) => b.createdAt - a.createdAt)
+            }
+        }
+
+        return toysToShow
+
   })
 }
 

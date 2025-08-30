@@ -82,6 +82,18 @@ export function ToyFilter({ filterBy, onSetFilter }) {
             ))}
           </div>
         </div>
+
+        <label htmlFor="sortBy">Sort By:</label>
+        <select
+          name="sortBy"
+          id="sortBy"
+          value={filterByToEdit.sortBy}
+          onChange={handleChange}
+        >
+          <option value="name">Name</option>
+          <option value="price">Price</option>
+          <option value="createdAt">Created At</option>
+        </select>
       </form>
     </section>
   )
