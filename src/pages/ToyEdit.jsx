@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toyService } from '../services/toy.service-local.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { saveToy } from '../store/actions/toy.actions.js'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useOnlineStatus } from '../hooks/useOnlineStatus.js'
 
 export function ToyEdit() {
   const navigate = useNavigate()
   const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
   const { toyId } = useParams()
+
+  const isOnline = useOnlineStatus()
 
   useEffect(() => {
     if (toyId) loadToy()
@@ -91,6 +94,10 @@ export function ToyEdit() {
           <div>
             <button>{toyToEdit._id ? 'Save' : 'Add'}</button>
             <Link to="/toy">Cancel</Link>
+
+            <section>
+              <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>
+            </section>
           </div>
         </form>
       </section>
