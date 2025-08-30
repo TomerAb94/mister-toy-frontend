@@ -3,17 +3,11 @@ import { toyService } from '../services/toy.service-local.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { saveToy } from '../store/actions/toy.actions.js'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-// import { useOnlineStatus } from "../hooks/useOnlineStatusSyncStore.js"
-// import { useOnlineStatus } from "../hooks/useOnlineStatus.js"
-// import { useConfirmTabClose } from "../hooks/useConfirmTabClose.js"
 
 export function ToyEdit() {
   const navigate = useNavigate()
   const [toyToEdit, setToyToEdit] = useState(toyService.getEmptyToy())
   const { toyId } = useParams()
-
-  // const isOnline = useOnlineStatus()
-  // const setHasUnsavedChanges = useConfirmTabClose()
 
   useEffect(() => {
     if (toyId) loadToy()
@@ -33,7 +27,6 @@ export function ToyEdit() {
     let { value, type, name: field } = target
     value = type === 'number' ? +value : value
     setToyToEdit((prevToy) => ({ ...prevToy, [field]: value }))
-    // setHasUnsavedChanges(true)
   }
 
   function onSaveToy(ev) {
@@ -95,14 +88,10 @@ export function ToyEdit() {
             <option value={false}>No</option>
           </select>
 
-
           <div>
             <button>{toyToEdit._id ? 'Save' : 'Add'}</button>
             <Link to="/toy">Cancel</Link>
           </div>
-          {/* <section>
-                        <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>
-                    </section> */}
         </form>
       </section>
     </>

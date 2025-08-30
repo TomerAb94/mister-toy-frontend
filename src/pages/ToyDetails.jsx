@@ -4,8 +4,6 @@ import { Link, useParams, useNavigate } from 'react-router-dom'
 import { PopUp } from '../cmps/PopUp.jsx'
 import { Chat } from '../cmps/Chat.jsx'
 
-
-
 export function ToyDetails() {
   const [toy, setToy] = useState(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -70,7 +68,7 @@ export function ToyDetails() {
         </button>
       </p>
       <button onClick={() => openChat()}> 💬</button>
-      <PopUp isOpen={isOpen} onClose={onCloseChat} title='Chat'>
+      <PopUp isOpen={isOpen} onClose={onCloseChat} title="Chat">
         <Chat />
       </PopUp>
     </section>

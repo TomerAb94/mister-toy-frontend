@@ -11,7 +11,6 @@ import { ToyIndex } from './pages/ToyIndex.jsx'
 import { store } from './store/store.js'
 import { ToyEdit } from './pages/ToyEdit.jsx'
 import { ToyDetails } from './pages/ToyDetails.jsx'
-// import { UserDetails } from './pages/UserDetails.jsx'
 
 export default function App() {
   return (

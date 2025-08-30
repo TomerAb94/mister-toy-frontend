@@ -1,7 +1,6 @@
-import React, { use } from 'react'
 import { useEffect } from 'react'
 
-export function PopUp ({ children, isOpen, onClose, title = 'Pop-Up' }) {
+export function PopUp({ children, isOpen, onClose, title = 'Pop-Up' }) {
   if (!isOpen) return
 
   useEffect(() => {
@@ -22,5 +21,3 @@ export function PopUp ({ children, isOpen, onClose, title = 'Pop-Up' }) {
     </div>
   )
 }
-
-

@@ -1,13 +1,5 @@
-import React from 'react'
 import { useState } from 'react'
 import { makeId } from '../services/util.service.js'
-
-// const msgs = [
-//   { id: 1, txt: 'hello', from: 'user' },
-//   { id: 2, txt: 'hi', from: 'system' },
-//   { id: 3, txt: 'how are you?', from: 'user' },
-//   { id: 4, txt: 'good, and you?', from: 'system' },
-// ]
 
 export function Chat() {
   const [msgs, setMsgs] = useState([])
