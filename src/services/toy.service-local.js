@@ -1,7 +1,6 @@
 import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
-
 const STORAGE_KEY = 'toyDB'
 
 export const toyService = {
@@ -17,46 +16,47 @@ export const toyService = {
 
 function query(filterBy = {}) {
   console.log('filterBy', filterBy)
-  
+
   return storageService.query(STORAGE_KEY).then((toys) => {
     let toysToShow = toys
 
-        //* Filter by text
-        if (filterBy.txt) {
-            const regExp = new RegExp(filterBy.txt, 'i')
-            toysToShow = toysToShow.filter(toy => regExp.test(toy.name))
-        }
+    //* Filter by text
+    if (filterBy.txt) {
+      const regExp = new RegExp(filterBy.txt, 'i')
+      toysToShow = toysToShow.filter((toy) => regExp.test(toy.name))
+    }
 
-        //* Filter by maxPrice
-        if (filterBy.maxPrice) {
-            toysToShow = toysToShow.filter(toy => toy.price <= filterBy.maxPrice)
-        }
+    //* Filter by maxPrice
+    if (filterBy.maxPrice) {
+      toysToShow = toysToShow.filter((toy) => toy.price <= filterBy.maxPrice)
+    }
 
-        //* Filter by inStock
-        if (filterBy.inStock !== '') {
-            toysToShow = toysToShow.filter(toy => toy.inStock === (filterBy.inStock === 'true'))
-        }
+    //* Filter by inStock
+    if (filterBy.inStock !== '') {
+      toysToShow = toysToShow.filter(
+        (toy) => toy.inStock === (filterBy.inStock === 'true')
+      )
+    }
 
-        //* Filter by labels
-        if (filterBy.labels && filterBy.labels.length) {
-            toysToShow = toysToShow.filter(toy => 
-                filterBy.labels.every(label => toy.labels.includes(label))
-            )
-        }
+    //* Filter by labels
+    if (filterBy.labels && filterBy.labels.length) {
+      toysToShow = toysToShow.filter((toy) =>
+        filterBy.labels.every((label) => toy.labels.includes(label))
+      )
+    }
 
-        //* Sort
-        if (filterBy.sortBy) {
-            if (filterBy.sortBy === 'name') {
-                toysToShow = toysToShow.sort((a, b) => a.name.localeCompare(b.name))
-            } else if (filterBy.sortBy === 'price') {
-                toysToShow = toysToShow.sort((a, b) => a.price - b.price)
-            } else if (filterBy.sortBy === 'createdAt') {
-                toysToShow = toysToShow.sort((a, b) => b.createdAt - a.createdAt)
-            }
-        }
+    //* Sort
+    if (filterBy.sortBy) {
+      if (filterBy.sortBy === 'name') {
+        toysToShow = toysToShow.sort((a, b) => a.name.localeCompare(b.name))
+      } else if (filterBy.sortBy === 'price') {
+        toysToShow = toysToShow.sort((a, b) => a.price - b.price)
+      } else if (filterBy.sortBy === 'createdAt') {
+        toysToShow = toysToShow.sort((a, b) => b.createdAt - a.createdAt)
+      }
+    }
 
-        return toysToShow
-
+    return toysToShow
   })
 }
 
@@ -86,7 +86,7 @@ function getEmptyToy() {
     imgUrl: 'https://purepng.com/public/uploads/large/minion-toy-vbr.png',
     labels: [],
     createdAt: Date.now(),
-    inStock: true,
+    inStock: false,
   }
 }
 
