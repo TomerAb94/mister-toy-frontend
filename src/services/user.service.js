@@ -1,7 +1,5 @@
 import { httpService } from "./http.service"
 
-console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-
 const BASE_URL = 'auth/'
 const STORAGE_KEY_LOGGEDIN = 'loggedinUser'
 

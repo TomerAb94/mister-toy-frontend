@@ -9,20 +9,19 @@
 @import 'base/forms.css';
 
 /* Components */
-@import 'cmps/ToyIndex.css';
+@import 'pages/ToyIndex.css';
 @import 'cmps/AppHeader.css';
 @import 'cmps/AppFooter.css';
 @import 'cmps/ToggleBtn.css';
 @import 'cmps/UserMsg.css';
 @import 'cmps/PopUp.css';
 @import 'cmps/Chat.css';
-@import 'cmps/Dashboard.css';
-
-
+@import 'pages/Dashboard.css';
 @import 'cmps/ToyFilter.css';
 @import 'cmps/ToyList.css';
 @import 'cmps/ToyPreview.css';
 @import 'cmps/ToyEdit.css';
+@import 'pages/AboutUs.css';
 
 .app {
   display: flex;
