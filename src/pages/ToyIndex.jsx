@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { ToyFilter } from '../cmps/ToyFilter.jsx'
 import { ToyList } from '../cmps/ToyList.jsx'
-import { toyService } from '../services/toy.service.js'
+import { toyService } from '../services/toy.service-local.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import {
   loadToys,

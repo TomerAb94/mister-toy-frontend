@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { toyService } from '../services/toy.service.js'
+import { toyService } from '../services/toy.service-local.js'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { PopUp } from '../cmps/PopUp.jsx'
 import { Chat } from '../cmps/Chat.jsx'

@@ -1,0 +1,8 @@
+.charts {
+  display: grid;
+  justify-content: center;
+}
+
+.chart {
+  width: clamp(500px, 60%, 800px);
+}

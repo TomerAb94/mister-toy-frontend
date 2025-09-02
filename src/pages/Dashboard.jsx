@@ -17,7 +17,7 @@ ChartJS.register(
   LinearScale,
   BarElement
 )
-import { getLabels } from '../services/toy.service.js'
+import { getLabels } from '../services/toy.service-local.js'
 
 export function Dashboard() {
   const toys = useSelector((storeState) => storeState.toyModule.toys)
@@ -25,13 +25,17 @@ export function Dashboard() {
   const labelsData = getLabelsData()
 
   function getLabelsData() {
-    const res = labels.map((label) => ({ label: label, amount: 0, sumedPrice:0 }))
+    const res = labels.map((label) => ({
+      label: label,
+      amount: 0,
+      sumedPrice: 0,
+    }))
     toys.forEach((toy) => {
       toy.labels.forEach((toyLabel) => {
         const match = res.find((item) => item.label === toyLabel)
         if (match) {
           match.amount += 1
-          match.sumedPrice+=toy.price
+          match.sumedPrice += toy.price
         }
       })
     })
@@ -74,8 +78,7 @@ export function Dashboard() {
     labels: labels,
     datasets: [
       {
-        // label: labels,
-        data: labelsData.map((label) => label.sumedPrice/label.amount),
+        data: labelsData.map((label) => label.sumedPrice / label.amount),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -102,12 +105,27 @@ export function Dashboard() {
   }
 
   return (
-    <section className="my-chart">
+    <section className="dashboard-container">
       <h1>Toys Data</h1>
-      <h4>Inventory by Label</h4>
-      <Pie data={pieData} />
-      <h4>Avarage Price by Label</h4>
-      <Bar data={BarData} />
+      <section className="charts">
+        <div className="chart">
+          <h4>Inventory by Label</h4>
+          <Pie data={pieData} />
+        </div>
+        <div className="chart">
+          <h4>Avarage Price by Label</h4>
+          <Bar
+            data={BarData}
+            options={{
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            }}
+          />
+        </div>
+      </section>
     </section>
   )
 }
