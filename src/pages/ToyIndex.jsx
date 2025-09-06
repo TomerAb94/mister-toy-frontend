@@ -20,47 +20,37 @@ export function ToyIndex() {
   const isLoading = useSelector((storeState) => storeState.toyModule.isLoading)
 
   useEffect(() => {
-    loadToys().catch((err) => {
-      showErrorMsg('Cannot load toys!')
-    })
+    async function fetchToys() {
+      try {
+        await loadToys()
+      } catch (err) {
+        showErrorMsg('Cannot load toys!')
+      }
+    }
+    fetchToys()
   }, [filterBy])
 
   function onSetFilter(filterBy) {
     setFilterBy(filterBy)
   }
 
-  function onRemoveToy(toyId) {
-    removeToyOptimistic(toyId)
-      .then(() => {
-        showSuccessMsg('Toy removed')
-      })
-      .catch((err) => {
-        showErrorMsg('Cannot remove toy')
-      })
+  async function onRemoveToy(toyId) {
+    try {
+      await removeToyOptimistic(toyId)
+      showSuccessMsg('Toy removed')
+    } catch (err) {
+      showErrorMsg('Cannot remove toy')
+    }
   }
 
-  function onAddToy() {
-    const toyToSave = toyService.getRandomToy()
-    saveToy(toyToSave)
-      .then((savedToy) => {
-        showSuccessMsg(`Toy added (id: ${savedToy._id})`)
-      })
-      .catch((err) => {
-        showErrorMsg('Cannot add toy')
-      })
-  }
-
-  function onEditToy(toy) {
-    const price = +prompt('New price?')
-    const toyToSave = { ...toy, price }
-
-    saveToy(toyToSave)
-      .then((savedToy) => {
-        showSuccessMsg(`Toy updated to price: $${savedToy.price}`)
-      })
-      .catch((err) => {
-        showErrorMsg('Cannot update toy')
-      })
+  async function onAddRandomToy() {
+    try {
+      const toyToSave = toyService.getRandomToy()
+      const savedToy = await saveToy(toyToSave)
+      showSuccessMsg(`Toy added (id: ${savedToy._id})`)
+    } catch (err) {
+      showErrorMsg('Cannot add toy')
+    }
   }
 
   return (
@@ -70,7 +60,7 @@ export function ToyIndex() {
         <button>
           <Link to="/toy/edit">Add Toy</Link>
         </button>
-        <button className="add-btn" onClick={onAddToy}>
+        <button className="add-btn" onClick={onAddRandomToy}>
           Add Random Toy 🧸
         </button>
         <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
@@ -78,7 +68,6 @@ export function ToyIndex() {
           <ToyList
             toys={toys}
             onRemoveToy={onRemoveToy}
-            onEditToy={onEditToy}
           />
         ) : (
           <div>Loading...</div>
