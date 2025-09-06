@@ -1,9 +1,25 @@
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material'
+
 import { useEffect, useState } from 'react'
 import { toyService } from '../services/toy.service-local.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { saveToy } from '../store/actions/toy.actions.js'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useOnlineStatus } from '../hooks/useOnlineStatus.js'
+import { getLabels } from '../services/toy.service-local.js'
 
 export function ToyEdit() {
   const navigate = useNavigate()
@@ -11,6 +27,8 @@ export function ToyEdit() {
   const { toyId } = useParams()
 
   const isOnline = useOnlineStatus()
+
+  const labels = getLabels()
 
   useEffect(() => {
     if (toyId) loadToy()
@@ -26,16 +44,8 @@ export function ToyEdit() {
       })
   }
 
-  function handleChange({ target }) {
-    let { value, type, name: field } = target
-    value = type === 'number' ? +value : value
-    setToyToEdit((prevToy) => ({ ...prevToy, [field]: value }))
-  }
-
-  function onSaveToy(ev) {
-    ev.preventDefault()
-    if (!toyToEdit.price) toyToEdit.price = 1000
-    saveToy(toyToEdit)
+  function onSaveToy(toyToSave) {
+    saveToy(toyToSave)
       .then(() => {
         showSuccessMsg('Toy Saved!')
         navigate('/toy')
@@ -46,61 +56,104 @@ export function ToyEdit() {
       })
   }
 
+  const ToyEditSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    price: Yup.number()
+      .required('Price is required')
+      .min(1, 'Price must be at least 1'),
+    inStock: Yup.boolean(),
+    labels: Yup.array().of(Yup.string()),
+  })
+
   return (
-    <>
-      <div></div>
+    <div>
       <section className="toy-edit">
         <h2>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h2>
+        <Formik
+          enableReinitialize
+          initialValues={toyToEdit}
+          validationSchema={ToyEditSchema}
+          onSubmit={onSaveToy}
+        >
+          {({ errors, touched, values, isValid, setFieldValue }) => (
+            <Form>
+              <Field
+                as={TextField}
+                name="name"
+                label="Name"
+                variant="outlined"
+                required
+                margin="normal"
+                error={touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
+                value={values.name}
+              />
 
-        <form onSubmit={onSaveToy}>
-          <label htmlFor="name">Name : </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Enter name..."
-            value={toyToEdit.name}
-            onChange={handleChange}
-          />
-          <label htmlFor="price">Price : </label>
-          <input
-            type="number"
-            name="price"
-            id="price"
-            placeholder="Enter price"
-            value={toyToEdit.price}
-            onChange={handleChange}
-          />
-          <label htmlFor="imgUrl">Img : </label>
-          <input
-            type="url"
-            name="imgUrl"
-            id="imgUrl"
-            placeholder="Enter URL..."
-            value={toyToEdit.imgUrl}
-            onChange={handleChange}
-          />
-          <label htmlFor="inStock">In Stock : </label>
-          <select
-            name="inStock"
-            id="inStock"
-            value={toyToEdit.inStock}
-            onChange={handleChange}
-          >
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
-          </select>
+              <Field
+                as={TextField}
+                label="Price"
+                variant="outlined"
+                type="number"
+                name="price"
+                required
+                margin="normal"
+                inputProps={{ min: 1 }}
+                error={touched.price && !!errors.price}
+                helperText={touched.price && errors.price}
+                value={values.price}
+              />
 
-          <div>
-            <button>{toyToEdit._id ? 'Save' : 'Add'}</button>
-            <Link to="/toy">Cancel</Link>
+              <FormControl
+                margin="normal"
+                style={{ minWidth: '20vw' }}
+                variant="outlined"
+              >
+                <InputLabel id="labels-label">Labels</InputLabel>
+                <Select
+                  labelId="labels-label"
+                  id="labels"
+                  multiple
+                  name="labels"
+                  value={values.labels}
+                  onChange={(ev) => {
+                    setFieldValue('labels', ev.target.value)
+                  }}
+                  renderValue={(selected) => selected.join(', ')}
+                  label="Labels"
+                >
+                  {labels.map((label) => (
+                    <MenuItem key={label} value={label}>
+                      <Checkbox checked={values.labels.includes(label)} />
+                      <ListItemText primary={label} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-            <section>
-              <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>
-            </section>
-          </div>
-        </form>
+              <FormControlLabel
+                control={
+                  <Field
+                    as={Checkbox}
+                    name="inStock"
+                    checked={values.inStock}
+                  />
+                }
+                label="In Stock"
+              />
+
+              <Button variant="contained" type="submit" disabled={!isValid}>
+                {toyToEdit._id ? 'Save' : 'Add'}
+              </Button>
+            </Form>
+          )}
+        </Formik>
       </section>
-    </>
+      <section>
+        <h3>{isOnline ? '✅ Online' : '❌ Disconnected'}</h3>
+      </section>
+    </div>
   )
 }
